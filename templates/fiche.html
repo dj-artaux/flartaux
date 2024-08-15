@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Mobile Market</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+    {% include 'header.html' %}
+<li>Bonjour, {{username}}</li>
+
+{% block content %}
+
+<body>
+  <div class="container">
+    <div class="table-row">
+     <div class="table-cell" max-width=30px>
+<span>You have {% for order in orders %}{% if loop.index == 1 %}{{ loop.length }}{% endif %}{% endfor %} product(s) :</span>
+
+{% for order in orders %}
+    		
+		<form action="/getfiche" method="post" name="order_id">
+            <input type="hidden" name="order_id" value="{{order['id']}}">
+            <!--<p>Product: {{ order.id }}</p>-->
+            <!--<p>Product: {{ order.counter }}</p>-->			
+            <!--<p>Product: {{ order.product_name }}</p>-->
+            <button type="submit" class="getfiche-button">{{ order.id }}</button>
+	
+        </form>
+
+          {% endfor %}
+        </div>
+
+{% endblock %}
+{% extends "layout.html"%}
+{%block body%}
+
+    <div class="container orders">
+
+        <div class="order-list">
+            {% for order in orders %}
+			    {% if loop.length > 1 %} 
+
+            {% else %}
+            <div class="order">
+                <p>Product: {{ order.id }}</p>
+            <p>Product: {{ order.product_name }}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+      </div>
+    </div>
+  </div>
+  </body>
+
+{%endblock%}
+</html>

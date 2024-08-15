@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Mobile Market</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+</head>
+    {% include 'header.html' %}
+	
+{% block content %}
+<body>
+  <div class="container">
+    <div class="table-row">
+     <div class="table-cell">
+	        <div class="card-body">
+		
+			<form method="POST">
+				{{ form.csrf_token}}  
+				<div class="form-group">
+				<label for="email">Commune:</label>
+				{{ form.commune(class="form-control") }}
+				</div>
+				<div class="form-group">
+				<label for="email">section:</label>
+				{{ form.section(class="form-control")}}
+				</div>
+				<input type="submit" value="Filtrer les parcelles" class="btn btn-success" btn-lg>
+  </form>
+
+     <div class="form-inline">
+          {% for parcelle in parcelles %}
+<form action="/pay" name="idsuf" method="post" style='display:inline;margin: 1; padding: 1;'>
+            <input type="hidden" name="parcelle_idsuf" value="{{parcelle['idsuf']}}">
+
+            <button type="submit" class="pay-button">{{ parcelle.idsuf }}</button>
+	
+
+        </form>	
+          {% endfor %}
+        </div>
+        </div>
+         </div>
+<script>
+commune_select = document.getElementById('commune');
+section_select = document.getElementById('section');
+parcelle_select = document.getElementById('parcelle');
+ 
+commune_select.onchange = function(){
+ history.pushState({}, null, '/');
+ commune = commune_select.value;
+ <!-- alert(commune); --> 
+ fetch('section/' + commune).then(function(response){
+  response.json().then(function(data) {
+   optionHTML = '';
+   for (section of data.sectioncommune) {
+    optionHTML += '<option value="' + section.ccosec +'">' + section.ccosec + '</option>'
+   }
+   section_select.innerHTML = optionHTML;
+  });
+ });
+}
+section_select.onchange = function(){
+ parcelle = section_select.value; 
+ fetch('parcelle/' + parcelle).then(function(response){
+  response.json().then(function(data) {
+   optionHTML = '';
+   for (parcelle_rs of data.parcellelist) {
+    optionHTML += '<option value="' + parcelle_rs.ccosec +'">' + parcelle_rs.ccosec + '</option>'
+   }
+   parcelle_select.innerHTML = optionHTML;
+  });
+ });
+}
+</script>
+				
+				
+{% endblock %}
+{% extends "layout.html"%}
+{%block body%}
+
+      <div class="table-cell">	  
+   
+            <table id="example" class= "table table-hover table-bordered">
+
+                <thead>
+                    <tr class="bg-dark text-white">
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Action</th>
+					</tr>
+                </thead>
+                <tbody>
+                    {%for TParceldem in t_parceldem%}
+                    <tr>
+                        <!-- data.index is used so that table has S.no. even when some
+                        id get deleted from the table-->
+
+                        <td width="3900" >{{TParceldem.par_idsuf}}</td>
+                        <td width="150" >
+                            <!-- to get the value for button we need real ID not index -->
+
+                            <a href="/delete/{{TParceldem[0]}}" class="btn btn-danger btn-sm ">Delete</a>
+                        </td>
+					</tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+      </div>
+    </div>
+  </div>
+  </body>
+
+{%endblock%}
+</html>

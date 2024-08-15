@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Mobile Market</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+</head>
+    {% include 'header.html' %}
+
+{% block content %}
+
+<body>
+  <div class="container">
+    <div class="table-row">
+     <div class="table-cell" max-width=30px>
+<span>Vous avez sélectionné<br>{% for dossier in dossiers %}{% if loop.index == 1 %}{{ loop.length }}{% endif %}{% endfor %} dossier(s) :</span>
+     <div class="form-inline">
+{% for dossier in dossiers %}
+	{% if loop.length == 1 %}
+		<span>Vous avez sélectionné<br>le dossier ci-dessous :</span>
+				<form action="/getdossier" method="post" name="no_interne">
+            <input type="hidden" name="no_interne" value="{{dossier['no_interne']}}">
+            <button type="submit" class="getdossier-button">{{ dossier.no_interne }}</button>
+	
+        </form>
+	{% else %}
+		
+		<form action="/getdossier" method="post" name="no_interne">
+            <input type="hidden" name="no_interne" value="{{dossier['no_interne']}}">
+            <button type="submit" class="getdossier-button">{{ dossier.no_interne }}</button>
+	
+        </form>
+	{% endif %}
+{% endfor %}
+        </div>
+        </div>
+{% endblock %}
+{% extends "layout.html"%}
+{%block body%}
+
+    <div class="container orders">
+
+        <div class="order-list">
+            {% for dossier in dossiers %}
+			    {% if loop.length > 1 %}
+					{% if loop.index == 1 %}
+						<span>Merci de bien vouloir sélectionner 
+						un dossier dans la liste de gauche
+						pour en afficher les détails.</span>
+					{% endif %}
+				{% else %}
+            <div class="order">
+                <p>N°Dossier : {{ dossier.no_interne }}</p>
+            <p>Date de dépôt : {{ dossier.date_de_depot }}</p>
+			<p>Numéro pacage du demandeur : {{ dossier.no_pacage_demandeur }}</p>
+			<p>Raison sociale du demandeur : {{ dossier.u_nom_raison_sociale }}</p>
+            </div>
+				{% endif %}
+            {% endfor %}
+        </div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+      </div>
+    </div>
+  </div>
+  </body>
+
+{%endblock%}
+</html>

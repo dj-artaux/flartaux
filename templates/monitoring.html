@@ -1,0 +1,27 @@
+    <table border="2" style="solid black">
+     <tr>
+        <td>Equip</td>
+        <td>Line</td>
+        <td>Plant</td>
+
+{% for instance in query %}
+    <tr>
+      <td>{{ instance.EQUIP_ID }} </td>
+      <td>{{ instance.LINE_ID }} </td>
+      <td>{{ instance.PLANT_CODE }} </td>
+      {% endfor %}
+    </tr>
+{% endfor %}
+
+        {% for query in query %}
+            {% for field, value in query.items %}
+
+                <tr>
+                    <td>{{ value }} </td>
+
+                </tr>
+            {% endfor %}
+        {% endfor %}
+     </tr>
+	 
+    </table>

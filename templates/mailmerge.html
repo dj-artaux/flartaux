@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+<div class="row justify-content-center mt-5">
+        <div class="col-md-7 text-center">
+
+                 <h1>Simple todo app</h1>
+				 <select>
+				 {% for title in tasklist %}
+					<option value={{title}}>{{title}}</li>
+				 {% endfor %}
+				 </select>
+				 <select name="tasklist" id="tasklist" class="form-control">       
+				 <option value="0">--Select tasklist--</option>     
+				 {% for title in tasklist  %}
+					<option value="{{ tasklist.id }}">{{ tasklist.title }}</option>
+				 {% endfor %}
+				 </select>
+				 {% csrf_token %}
+				 <table>
+				 {{ form.as_table }}
+				 </table>
+		<a role="button" class="btn btn-primary btn-lg" href="{% url 'save_sample_details' %}">save_sample_details</a>
+        </div>
+    </div>
+
+{% endblock %}

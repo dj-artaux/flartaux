@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Mobile Market</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+</head>
+    {% include 'header.html' %}
+	
+{% block content %}
+
+<body>
+  <div class="container">
+    <div class="table-row">
+     <div class="table-cell">
+
+          {% for product in products %}
+<form action="/pay" method="post">
+            <input type="hidden" name="product_id" value="{{product['id']}}">
+            <input type="hidden" name="product_name" value="{{product['name']}}">
+            <input type="hidden" name="quantity" class="quantity-input" value="1">
+            <input type="hidden" name="delivery_address" class="delivery_address" value="wdfhd">
+            <button type="submit" class="pay-button">{{ product.name }}</button>
+	
+        </form>
+
+          {% endfor %}
+        </div>
+
+{% endblock %}
+{% extends "layout.html"%}
+{%block body%}
+
+      <div class="table-cell">	  
+   
+            <table id="example" class= "table table-hover table-bordered">
+
+                <thead>
+                    <tr class="bg-dark text-white">
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Action</th>
+					</tr>
+                </thead>
+                <tbody>
+                    {%for OrderDetails in order_details%}
+                    <tr>
+                        <!-- data.index is used so that table has S.no. even when some
+                        id get deleted from the table-->
+                        <!--<td scope="row">{{OrderDetails.id}}+1}}</td>-->
+                        <td width="3900" >{{OrderDetails.product_name}}</td>
+                        <td width="150" >
+                            <!-- to get the value for button we need real ID not index -->
+                            <!-- <a href="/update/{{OrderDetails[0]}}" class="btn btn-warning btn-sm">Update</a> -->
+                            <a href="/delete/{{OrderDetails[0]}}" class="btn btn-danger btn-sm ">Delete</a>
+                        </td>
+					</tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+      </div>
+    </div>
+  </div>
+  </body>
+
+{%endblock%}
+</html>
